@@ -23,7 +23,6 @@ class DetailsViewController: UIViewController {
     
     func setupUI() {
         view.backgroundColor = .systemBackground
-             // weatherLabel = UILabel(frame: UIScreen.main.bounds)
         guard let city = city else {
             weatherLabel.text = "Something went wrong^^'"
             return

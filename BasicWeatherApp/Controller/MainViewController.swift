@@ -58,7 +58,7 @@ class MainViewController: UITableViewController {
     
     // MARK: - Core Data
     
-    func createCities(cities: [City]) {
+    func createNew(_ cities: [City]) {
         print("creating cities")
         for n in 0..<cities.count {
             let cityModel = NSEntityDescription.insertNewObject(forEntityName: "CityModel", into: context) as! CityModel
@@ -68,27 +68,27 @@ class MainViewController: UITableViewController {
         }
     }
     
-    func updateCities(cities: [City]) {
-        print("updating cities")
-        for n in 0..<cities.count {
-            self.cities[n].temp = cities[n].temp
+    func updateExisting(_ cities: [City]) {
+        print("updating saved cities")
+        for n in 0..<cityModels.count {
+            cityModels[n].temp = cities[n].temp
         }
     }
     
-    func saveOrUpdate(cities: [City]) {
+    func saveOrUpdate(_ cities: [City]) {
         
         do {
             cityModels = try context.fetch(request)
-            print("trying to fetch from disk")
+            print("checking if there is data on disk")
             print(cityModels.count)
         } catch {
             print("No data found")
         }
         
         if cityModels.count > 0 {
-            updateCities(cities: cities)
+            updateExisting(cities)
         } else {
-            createCities(cities: cities)
+            createNew(cities)
         }
         saveContext()
     }
@@ -137,7 +137,7 @@ extension MainViewController: WeatherAPIDelegate {
             self.loading = false
             self.cities = cities
             self.tableView.reloadData()
-            self.saveOrUpdate(cities: cities)
+            self.saveOrUpdate(cities)
         }
     }
     

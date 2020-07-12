@@ -11,6 +11,8 @@ import XCTest
 
 class BasicWeatherAppTests: XCTestCase {
 
+    var mainVC = MainViewController()
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -30,5 +32,18 @@ class BasicWeatherAppTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    //MARK: - Positive Cases
+    
+    func testWeatherLabelshow() {
+        
+    }
+    
+    func testCreatingCityOnDisk() {
+        
+        let city = City
+        mainVC.createCities(cities: <#T##[City]#>)
+    }
+    
 
 }
