@@ -7,61 +7,145 @@
 //
 
 import UIKit
+import CoreData
 
 class MainViewController: UITableViewController {
-
+    
     var cities: [City] = []
+    var cityModels: [CityModel] = []
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let request = NSFetchRequest<CityModel>(entityName: "CityModel")
     
+    var weatherAPI = WeatherAPI()
+    var loading = true
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        weatherAPI.delegate = self
+        navigationItem.title = "Choose a city"
+        weatherAPI.getWeatherData(for: weatherAPI.weatherURL)
+        
+    }
     
-    }
-
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-
+    // MARK: - TableView Setup
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ccities.count
+        if loading {
+            return 1
+        } else {
+            return cities.count
+        }
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = cities[indexPath.row]
-        
-    
+        if loading {
+            cell.textLabel?.text = "Loading..."
+        } else {
+            cell.textLabel?.text = cities[indexPath.row].name
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsVC = DetailsViewController()
         
-        let name = "this"
-        detailsVC.text = name
+        let detailsVC = DetailsViewController()
+        detailsVC.city = cities[indexPath.row]
         navigationController?.pushViewController(detailsVC, animated: true)
     }
-   
     
-
+    // MARK: - Core Data
+    
+    func createCities(cities: [City]) {
+        print("creating cities")
+        for n in 0..<cities.count {
+            let cityModel = NSEntityDescription.insertNewObject(forEntityName: "CityModel", into: context) as! CityModel
+            cityModel.name = cities[n].name
+            cityModel.temp = cities[n].temp
+            cityModels.append(cityModel)
+        }
+    }
+    
+    func updateCities(cities: [City]) {
+        print("updating cities")
+        for n in 0..<cities.count {
+            self.cities[n].temp = cities[n].temp
+        }
+    }
+    
+    func saveOrUpdate(cities: [City]) {
+        
+        do {
+            cityModels = try context.fetch(request)
+            print("trying to fetch from disk")
+            print(cityModels.count)
+        } catch {
+            print("No data found")
+        }
+        
+        if cityModels.count > 0 {
+            updateCities(cities: cities)
+        } else {
+            createCities(cities: cities)
+        }
+        saveContext()
+    }
+    
+    func saveContext() {
+        do {
+            try context.save()
+            print("saving context")
+            
+        } catch {
+            print("Failed to save context: \(error)")
+        }
+    }
+    
+    func fetchCitiesFromDisk()  {
+        do {
+            print(" try fetching")
+            cityModels = try context.fetch(request)
+            guard cityModels.count > 0 else {
+                navigationItem.title = "check network and restart the app"
+                return
+            }
+            print("fetched models")
+            
+            for n in 0..<cityModels.count {
+                guard let name = cityModels[n].name else {return}
+                let temp = cityModels[n].temp
+                cities.append(City(name: name, temp: temp))
+            }
+            print("mapped fetched data from dsik to models")
+            print(cities)
+            
+        } catch {
+            print("Error. Please, check network and restart the app")
+        }
+    }
 }
 
-extension MainViewController: WeatherAPIDelegate {
-    func didGetWeatherData(_ weaherAPI: WeatherAPI, weather: [City]) {
-        print("hereGoesTheData")
-        cities = weather
-    }
-    
-    func didFailToGet() {
-                print("hereNoGoesTheData")
+// MARK: - Delegate Functions
 
+extension MainViewController: WeatherAPIDelegate {
+    
+    func didGetWeatherData(_ weaherAPI: WeatherAPI, for cities: [City]) {
+        print("start updating weather")
+        DispatchQueue.main.async {
+            self.loading = false
+            self.cities = cities
+            self.tableView.reloadData()
+            self.saveOrUpdate(cities: cities)
+        }
     }
     
-    
+    func didFailToGetData() {
+        DispatchQueue.main.async {
+            self.fetchCitiesFromDisk()
+            self.loading = false
+            self.tableView.reloadData()
+        }
+    }
 }

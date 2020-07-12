@@ -29,7 +29,7 @@ struct WeatherAPI {
     
     
     
-    func getWeatherData(string: String) {
+    func getWeatherData(for string: String) {
            if let url = URL(string: weatherURL) {
                print("set a task")
                let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
