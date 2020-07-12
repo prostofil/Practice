@@ -10,7 +10,7 @@ import UIKit
 
 class MainViewController: UITableViewController {
 
-    var ccities = ["a","s","s","f","f","d"]
+    var cities: [City] = []
     
     
     
@@ -23,9 +23,9 @@ class MainViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ccities.count
@@ -34,7 +34,8 @@ class MainViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = ccities[indexPath.row]
+        cell.textLabel?.text = cities[indexPath.row]
+        
     
         return cell
     }
@@ -42,11 +43,25 @@ class MainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailsVC = DetailsViewController()
         
-        let name = ccities[indexPath.row]
+        let name = "this"
         detailsVC.text = name
         navigationController?.pushViewController(detailsVC, animated: true)
     }
    
     
 
+}
+
+extension MainViewController: WeatherAPIDelegate {
+    func didGetWeatherData(_ weaherAPI: WeatherAPI, weather: [City]) {
+        print("hereGoesTheData")
+        cities = weather
+    }
+    
+    func didFailToGet() {
+                print("hereNoGoesTheData")
+
+    }
+    
+    
 }
