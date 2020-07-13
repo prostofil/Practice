@@ -11,7 +11,6 @@ import UIKit
 class DetailsViewController: UIViewController {
 
     var weatherLabel = UILabel()
-    var text: String?
     var city: City?
     
     override func viewDidLoad() {
@@ -28,7 +27,7 @@ class DetailsViewController: UIViewController {
             return
         }
          
-        weatherLabel.text = "The weather in \(city.name)is \(city.temp)℃"
+        weatherLabel.text = "The weather in \(city.name) is \(city.temp)℃"
         
         weatherLabel.frame = CGRect(x: 0, y: 0, width: 350, height: 50)
 

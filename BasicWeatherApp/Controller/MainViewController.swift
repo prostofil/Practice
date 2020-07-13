@@ -25,7 +25,7 @@ class MainViewController: UITableViewController {
         super.viewDidLoad()
         weatherAPI.delegate = self
         navigationItem.title = "Choose a city"
-        weatherAPI.getWeatherData(for: weatherAPI.weatherURL)
+        weatherAPI.getWeatherData()
         
     }
     

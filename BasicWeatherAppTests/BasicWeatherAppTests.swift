@@ -12,6 +12,8 @@ import XCTest
 class BasicWeatherAppTests: XCTestCase {
 
     var mainVC = MainViewController()
+    var weatherAPI = WeatherAPI()
+    var detailsVC = DetailsViewController()
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -35,15 +37,28 @@ class BasicWeatherAppTests: XCTestCase {
     
     //MARK: - Positive Cases
     
-    func testWeatherLabelshow() {
+    
+    func testNoData() {
         
+     weatherAPI.weatherURL = ""
+        weatherAPI.getWeatherData()
+        XCTAssertThrowsError(weatherAPI.parseJSON(<#T##weatherData: Data##Data#>))
+        xctass
     }
     
-    func testCreatingCityOnDisk() {
+    func testDetails_labelTextStructure() {
+        detailsVC.city = City(name: "Cork", temp: 0.0)
+        detailsVC.setupUI()
         
-        let city = City
-        mainVC.createCities(cities: <#T##[City]#>)
+        XCTAssert(detailsVC.weatherLabel.text == "The weather in Cork is 0.0℃")
     }
     
+
+    func testDetails_labelErrorMessage() {
+        detailsVC.city = nil
+        detailsVC.setupUI()
+        
+        XCTAssert(detailsVC.weatherLabel.text == "Something went wrong^^'")
+    }
 
 }
