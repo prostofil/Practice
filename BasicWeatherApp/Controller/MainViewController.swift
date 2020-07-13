@@ -117,10 +117,11 @@ class MainViewController: UITableViewController {
     }
 }
 
-// MARK: - Delegate Functions
+// MARK: - Delegate Methods
 
 extension MainViewController: WeatherAPIDelegate {
     
+    // if parsing goes well, this delegate method is triggered to populate tableView with data, and save it
     func didGetWeatherData(_ weaherAPI: WeatherAPI, for cities: [City]) {
         DispatchQueue.main.async {
             self.loading = false
@@ -129,7 +130,7 @@ extension MainViewController: WeatherAPIDelegate {
             self.saveOrUpdate(cities)
         }
     }
-    
+    // if request fails, then this method is triggered to load data from disk.
     func didFailToGetData() {
         DispatchQueue.main.async {
             self.fetchCitiesFromDisk()
