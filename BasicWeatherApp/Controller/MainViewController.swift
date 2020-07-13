@@ -23,8 +23,9 @@ class MainViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherAPI.delegate = self
+        
         navigationItem.title = "Choose a city"
+        weatherAPI.delegate = self
         weatherAPI.getWeatherData()
         
     }
@@ -59,7 +60,6 @@ class MainViewController: UITableViewController {
     // MARK: - Core Data
     
     func createNew(_ cities: [City]) {
-        print("creating cities")
         for n in 0..<cities.count {
             let cityModel = NSEntityDescription.insertNewObject(forEntityName: "CityModel", into: context) as! CityModel
             cityModel.name = cities[n].name
@@ -69,7 +69,6 @@ class MainViewController: UITableViewController {
     }
     
     func updateExisting(_ cities: [City]) {
-        print("updating saved cities")
         for n in 0..<cityModels.count {
             cityModels[n].temp = cities[n].temp
         }
@@ -79,8 +78,6 @@ class MainViewController: UITableViewController {
         
         do {
             cityModels = try context.fetch(request)
-            print("checking if there is data on disk")
-            print(cityModels.count)
         } catch {
             print("No data found")
         }
@@ -96,8 +93,6 @@ class MainViewController: UITableViewController {
     func saveContext() {
         do {
             try context.save()
-            print("saving context")
-            
         } catch {
             print("Failed to save context: \(error)")
         }
@@ -105,24 +100,19 @@ class MainViewController: UITableViewController {
     
     func fetchCitiesFromDisk()  {
         do {
-            print(" try fetching")
             cityModels = try context.fetch(request)
             guard cityModels.count > 0 else {
                 navigationItem.title = "check network and restart the app"
                 return
             }
-            print("fetched models")
             
             for n in 0..<cityModels.count {
                 guard let name = cityModels[n].name else {return}
                 let temp = cityModels[n].temp
                 cities.append(City(name: name, temp: temp))
             }
-            print("mapped fetched data from dsik to models")
-            print(cities)
-            
         } catch {
-            print("Error. Please, check network and restart the app")
+            print("Error fetching")
         }
     }
 }
@@ -132,7 +122,6 @@ class MainViewController: UITableViewController {
 extension MainViewController: WeatherAPIDelegate {
     
     func didGetWeatherData(_ weaherAPI: WeatherAPI, for cities: [City]) {
-        print("start updating weather")
         DispatchQueue.main.async {
             self.loading = false
             self.cities = cities

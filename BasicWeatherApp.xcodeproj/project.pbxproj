@@ -88,10 +88,9 @@
 				F608CCBD24B9F384008440F0 /* Model */,
 				F608CCBA24B8EBAC008440F0 /* Controller */,
 				F608CC9324B8E78E008440F0 /* AppDelegate.swift */,
-				F608CC9F24B8E792008440F0 /* Assets.xcassets */,
-				F608CCA124B8E792008440F0 /* LaunchScreen.storyboard */,
-				F608CCA424B8E792008440F0 /* Info.plist */,
 				F608CC9C24B8E78E008440F0 /* BasicWeatherApp.xcdatamodeld */,
+				F608CCA424B8E792008440F0 /* Info.plist */,
+				F608CCC624BC6313008440F0 /* Supporting Files */,
 			);
 			path = BasicWeatherApp;
 			sourceTree = "<group>";
@@ -122,6 +121,15 @@
 				F608CCC424B9F9A5008440F0 /* City.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		F608CCC624BC6313008440F0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F608CC9F24B8E792008440F0 /* Assets.xcassets */,
+				F608CCA124B8E792008440F0 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

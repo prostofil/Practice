@@ -17,24 +17,23 @@ struct WeatherAPI {
     
     func getWeatherData() {
         guard let url = URL(string: weatherURL) else {return}
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if error == nil {
-                    if let safeData = data {
-                        if let cities = self.parseJSON(safeData){
-                            self.delegate?.didGetWeatherData(self, for: cities)
-                        }
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if error == nil {
+                if let safeData = data {
+                    if let cities = self.parseJSON(safeData){
+                        self.delegate?.didGetWeatherData(self, for: cities)
                     }
-                } else {
-                    print(error?.localizedDescription ?? "Error getting data.")
-                    self.delegate?.didFailToGetData()
                 }
+            } else {
+                print(error?.localizedDescription ?? "Error getting data.")
+                self.delegate?.didFailToGetData()
             }
-            task.resume()
+        }
+        task.resume()
     }
     
     
     func parseJSON(_ weatherData: Data) -> [City]? {
-        print("Start parsing JSON")
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
@@ -45,10 +44,8 @@ struct WeatherAPI {
                 cities.append(City(name: decodedData.list[n].name,
                                    temp: decodedData.list[n].main.temp))
             }
-            print("JSON decoded")
             return cities
         } catch {
-            print("Parsing failed")
             delegate?.didFailToGetData()
             return nil
         }
