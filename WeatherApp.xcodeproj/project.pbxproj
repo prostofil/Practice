@@ -23,7 +23,6 @@
 		F65AF4502545AFA8004FDB5A /* CityModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F65AF44E2545AFA8004FDB5A /* CityModel.xcdatamodeld */; };
 		F65AF4522545AFAD004FDB5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F65AF4512545AFAD004FDB5A /* Assets.xcassets */; };
 		F65AF4552545AFAD004FDB5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F65AF4532545AFAD004FDB5A /* LaunchScreen.storyboard */; };
-		F65AF4602545AFAD004FDB5A /* WeatherAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65AF45F2545AFAD004FDB5A /* WeatherAppTests.swift */; };
 		F65AF46F2545B0C7004FDB5A /* WeatherAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65AF46E2545B0C7004FDB5A /* WeatherAppState.swift */; };
 		F65AF4712545B0D5004FDB5A /* StateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65AF4702545B0D5004FDB5A /* StateStore.swift */; };
 		F6B2C646254A0F2900E2937F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B2C645254A0F2900E2937F /* CoreDataManager.swift */; };
@@ -62,8 +61,6 @@
 		F65AF4542545AFAD004FDB5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F65AF4562545AFAD004FDB5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F65AF45B2545AFAD004FDB5A /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F65AF45F2545AFAD004FDB5A /* WeatherAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppTests.swift; sourceTree = "<group>"; };
-		F65AF4612545AFAD004FDB5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F65AF46E2545B0C7004FDB5A /* WeatherAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppState.swift; sourceTree = "<group>"; };
 		F65AF4702545B0D5004FDB5A /* StateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateStore.swift; sourceTree = "<group>"; };
 		F6B2C645254A0F2900E2937F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -159,7 +156,6 @@
 			isa = PBXGroup;
 			children = (
 				F65AF4442545AFA8004FDB5A /* WeatherApp */,
-				F65AF45E2545AFAD004FDB5A /* WeatherAppTests */,
 				F65AF4432545AFA8004FDB5A /* Products */,
 				6E15B780D763623EA3F006DF /* Pods */,
 				A98FBEAD1C54C7EB5FC7B011 /* Frameworks */,
@@ -190,15 +186,6 @@
 				F65AF44E2545AFA8004FDB5A /* CityModel.xcdatamodeld */,
 			);
 			path = WeatherApp;
-			sourceTree = "<group>";
-		};
-		F65AF45E2545AFAD004FDB5A /* WeatherAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				F65AF45F2545AFAD004FDB5A /* WeatherAppTests.swift */,
-				F65AF4612545AFAD004FDB5A /* Info.plist */,
-			);
-			path = WeatherAppTests;
 			sourceTree = "<group>";
 		};
 		F65AF46A2545B062004FDB5A /* Scene */ = {
@@ -409,7 +396,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F65AF4602545AFAD004FDB5A /* WeatherAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
