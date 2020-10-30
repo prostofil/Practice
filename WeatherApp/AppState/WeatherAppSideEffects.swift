@@ -36,7 +36,6 @@ struct WeatherAppSideEffects {
         
         return {_ in
             
-            print("shouldLoadData sideEffect trigerred effect loadData")
             return self.networkManager.getData(string: self.networkManager.weatherURL)
                 
                 .asObservable()

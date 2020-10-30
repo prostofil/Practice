@@ -44,16 +44,13 @@ extension WeatherAppState {
         case .didLoadData(let cities):
             self.shouldLoadData = false
             self.didLoadData = true
-            print("Event.didLoadData")
             self.cities = cities ?? []
             
         case .didSelectCity(let index):
-            print("event didSelectCity")
             self.selectedCity = cities[index]
             shouldOpenDetails = true
             
         case .didOpenDetails:
-            print("event.didOpenDetails")
             self.shouldOpenDetails = false
         }
     }

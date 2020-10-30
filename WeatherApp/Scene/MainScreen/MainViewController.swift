@@ -20,54 +20,48 @@ class MainScreenViewController: UIViewController {
     
     
     override func viewDidLoad() {
-           super.viewDidLoad()
-                    
-           setupTableView()
-       }
-       
-           
-           func setupTableView() {
-               print("setup MainVC")
-               title = "Choose a city"
-               
-               view.addSubview(tableView)
-               
-               tableView.frame = self.view.bounds
-               tableView.rowHeight = 60
-               
-               tableView.delegate = self
-               tableView.dataSource = self
-           }
+        super.viewDidLoad()
+        
+        setupTableView()
+    }
     
-    
-    
+    func setupTableView() {
+        title = "Choose a city"
+        
+        view.addSubview(tableView)
+        
+        tableView.frame = self.view.bounds
+        tableView.rowHeight = 60
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
 }
-
+// MARK: - TableView
 extension  MainScreenViewController:  UITableViewDataSource,  UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
-            return cities.count
-    
+        
+        return cities.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        
-            cell.textLabel?.text = cities[indexPath.row].cityName
+        cell.textLabel?.text = cities[indexPath.row].cityName
         
         return cell
     }
     
-       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.didSelectIndex.onNext(indexPath)
-       }
+    }
 }
 
+// MARK: - Subscribe
 extension MainScreenViewController {
     
     func subscribe(to stateStore: StateStore<WeatherAppState>) {
-        print("MainScreenViewController.subscribe()")
         
         stateStore.stateBus.map { $0.cities}
             .distinctUntilChanged()
@@ -81,7 +75,6 @@ extension MainScreenViewController {
         didSelectIndex.map { index in
             .didSelectCity(atIndex: index.row)
         }.bind(to: stateStore.eventBus)
-        .disposed(by: bag)
+            .disposed(by: bag)
     }
-    
 }

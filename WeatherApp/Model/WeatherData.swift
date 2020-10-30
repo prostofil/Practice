@@ -10,13 +10,13 @@
 import Foundation
 
 struct WeatherData: Decodable {
-
+    
     let list: [City]
-
+    
 }
 
 struct City: Decodable {
-     let name: String
+    let name: String
     let main: Main
 }
 

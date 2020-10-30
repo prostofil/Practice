@@ -10,6 +10,5 @@ import Foundation
 
 
 enum Scene {
-    case mainScreen
     case detailsScreen
 }

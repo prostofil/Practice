@@ -35,11 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 sideEffects: WeatherAppSideEffects.init(
                                     coordinator: CoordinatorImpl(
                                         navigator: Navigator(push: {
-                                            print("navigator initialized \(navigationController.pushViewController($0, animated: true))")
-                                        navigationController.pushViewController($0, animated: true)
-                                        return .just(())
-                                    }),
-                                    sceneFactory: sceneFactory),
+                                            navigationController.pushViewController($0, animated: true)
+                                            return .just(())
+                                        }),
+                                        sceneFactory: sceneFactory),
                                     networkManager: NetworkManager(),
                                     state: WeatherAppState()).effects )
         
@@ -52,39 +51,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    
-    
-   
-    
-    
-    
-    
-    
     // MARK: - Core Data stack
-         
-         lazy var persistentContainer: NSPersistentContainer = {
-             /*
-              The persistent container for the application. This implementation
-              creates and returns a container, having loaded the store for the
-              application to it. This property is optional since there are legitimate
-              error conditions that could cause the creation of the store to fail.
-              */
-             let container = NSPersistentContainer(name: "CityModel")
-             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-                 if let error = error {
-                             assertionFailure(error.localizedDescription)
-                         }
-                 print("Core Data stack has been initialized with description: \(storeDescription)")
-             })
-             return container
-         }()
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        
+        let container = NSPersistentContainer(name: "CityModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+            }
+        })
+        return container
+    }()
     
     
     
     
     
     
-
+    
     
 }
 
