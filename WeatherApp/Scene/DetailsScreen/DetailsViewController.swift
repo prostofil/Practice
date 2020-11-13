@@ -12,7 +12,7 @@ import RxSwift
 class DetailsViewController: UIViewController {
     
     
-    var label = UILabel()
+    let label = UILabel()
     var temp: String = ""
     var city: String = ""
     private var bag = DisposeBag()

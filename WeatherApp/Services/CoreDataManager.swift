@@ -10,46 +10,44 @@ import Foundation
 import CoreData
 import UIKit
 
-class CoreDataManager {
+protocol DataManagerProtocol {
+    
+    func saveOrUpdate(cities: [WeatherModel])
+    func getCitiesFromCD() -> [WeatherModel]?
+}
+
+class CoreDataManager: DataManagerProtocol {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var cityModels: [CityModelCD] = []
     let request = NSFetchRequest<CityModelCD>(entityName: "CityModelCD")
     
-    
-    func saveCities(cities: [WeatherModel]) {
-        for n in 0..<cities.count {
-            let city = NSEntityDescription.insertNewObject(forEntityName: "CityModelCD", into: context) as! CityModelCD
-            city.name = cities[n].cityName
-            city.temp = cities[n].temperature
-            cityModels.append(city)
-            saveContext()
-        }
-    }
-    
     func saveOrUpdate(cities: [WeatherModel]) {
-        
+        print("original CD save or update")
+        var cityModels: [CityModelCD] = []
         do {
             cityModels = try context.fetch(request)
         } catch {
-            print("Error getting data")
+            print("Error getting data from CoreData")
         }
         if cityModels.count > 0 {
-            updateCities(cities: cities)
+            for n in 0..<cityModels.count {
+                cityModels[n].temp = cities[n].temperature
+            }
         } else {
-            saveCities(cities: cities)
+            for n in 0..<cities.count {
+                let city = NSEntityDescription
+                    .insertNewObject(forEntityName: "CityModelCD", into: context) as! CityModelCD
+                city.name = cities[n].cityName
+                city.temp = cities[n].temperature
+                cityModels.append(city)
+                saveContext()
+            }
         }
     }
-    
-    
-    func updateCities(cities: [WeatherModel]) {
-        for n in 0..<cityModels.count {
-            cityModels[n].temp = cities[n].temperature
-        }
-    }
-    
     
     func getCitiesFromCD() -> [WeatherModel]? {
+        print("Origianl CD")
+        var cityModels: [CityModelCD] = []
         var cities: [WeatherModel] = []
         do {
             cityModels = try context.fetch(request)
@@ -57,7 +55,7 @@ class CoreDataManager {
                 print("No data to load")
                 return []
             }
-            
+            print("found data on disk, converting to model")
             for n in 0..<cityModels.count {
                 guard let name = cityModels[n].name else {return []}
                 let temp = cityModels[n].temp

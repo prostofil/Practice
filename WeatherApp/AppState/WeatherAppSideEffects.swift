@@ -16,11 +16,13 @@ typealias WeatherSideEffect = SideEffect<WeatherAppState, WeatherAppState.Event>
 struct WeatherAppSideEffects {
     
     private let coordinator: Coordinator
-    private let networkManager: NetworkManager
-    
-    init(coordinator: Coordinator, networkManager: NetworkManager, state: WeatherAppState) {
+    private let networkManager: NetworkProtocol
+   // private var url: String
+   
+    init(coordinator: Coordinator, networkManager: NetworkProtocol, state: WeatherAppState) {
         self.coordinator = coordinator
         self.networkManager = networkManager
+       // self.url = networkManager.weatherURL
     }
     
     
@@ -35,9 +37,7 @@ struct WeatherAppSideEffects {
     var loadData: (Bool) -> Observable<WeatherAppState.Event> {
         
         return {_ in
-            
-            return self.networkManager.getData(string: self.networkManager.weatherURL)
-                
+            return self.networkManager.getData()
                 .asObservable()
                 .map{ .didLoadData($0)}
         }

@@ -19,6 +19,10 @@ pod 'RxCocoa', '~> 4.5.0'
   target 'WeatherAppTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RxFeedback', '~> 1.0'
+    pod 'RxSwift', '~> 4.5.0'
+    pod 'RxCocoa', '~> 4.5.0'
+
   end
 
 end

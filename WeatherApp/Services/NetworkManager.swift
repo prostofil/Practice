@@ -12,19 +12,31 @@ import RxSwift
 import CoreData
 import UIKit
 
-struct NetworkManager {
+protocol NetworkProtocol {
+    var weatherURL: String { get }
+    func getData() -> Single<[WeatherModel]?>
+}
+
+struct NetworkManager: NetworkProtocol {
     
-    private let coreData = CoreDataManager()
+    let coreData: DataManagerProtocol
+    let weatherURL: String
     
-    var weatherURL = "https://api.openweathermap.org/data/2.5/find?lat=55.99&lon=-2.54&cnt=5&units=metric&appid=bbead9bb4e81a9d4c95a833d92f3c02e"
+    init(coreData: DataManagerProtocol, url: String) {
+        self.coreData = coreData
+        self.weatherURL = url
+    }
     
-    func getData(string: String) -> Single<[WeatherModel]?> {
+    func getData() -> Single<[WeatherModel]?> {
         return Single.create { observer in
             if let url = URL(string: self.weatherURL) {
+                print("first if let url")
                 let session = URLSession(configuration: .default)
                 let task = session.dataTask(with: url) { (data, response, error) in
                     if error == nil {
+                        print("if error nil")
                         if let safeData = data {
+                            print(safeData)
                             if let weather = self.parseJSON(safeData){
                                 observer(.success(weather))
                             }
@@ -44,9 +56,8 @@ struct NetworkManager {
         }
     }
     
-    
-    
     func parseJSON(_ weatherData: Data) -> [WeatherModel]? {
+        print("parse JSON")
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
@@ -57,16 +68,18 @@ struct NetworkManager {
                 cities.append(WeatherModel(cityName: decodedData.list[n].name,
                                            temperature: decodedData.list[n].main.temp))
             }
-            
+            print("now core data save should run")
             coreData.saveOrUpdate(cities: cities)
             return cities
             
         } catch {
-            print("Error getting data")
-            
+            print("Error decoding data")
+            if let cities = coreData.getCitiesFromCD() {
+                return cities
+            } else {
+                print("Error getting data from CoreData")
+            }
             return nil
         }
     }
 }
-
-

@@ -13,7 +13,7 @@ import RxCocoa
 
 class MainScreenViewController: UIViewController {
     
-    var tableView = UITableView()
+    let tableView = UITableView()
     var cities: [WeatherModel] = []
     var didSelectIndex = PublishSubject<IndexPath>()
     private let bag = DisposeBag()

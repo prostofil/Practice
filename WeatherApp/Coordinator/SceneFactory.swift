@@ -11,14 +11,12 @@ import UIKit
 
 final class SceneFactory {
     
-    
     var stateStore: StateStore<WeatherAppState>!
     
     func create(scene: Scene) -> UIViewController {
         switch scene {
         case .detailsScreen:
             let vc = DetailsViewController()
-            
             vc.subscribe(to: stateStore)
             return vc
         }
